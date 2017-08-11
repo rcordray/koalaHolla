@@ -15,9 +15,19 @@ $(document).ready(function() {
             name: $('#nameIn').val(),
             age: $('#ageIn').val(),
             gender: $('#genderIn').val(),
-            readyForTransfer: $('#readyForTransferIn').val(),
+            ready_for_transfer: $('#readyForTransferIn').val(),
             notes: $('#notesIn').val()
         };
+
+        // $.ajax({
+        //         method: 'POST',
+        //         url: '/koala',
+        //         data: objectToSend,
+        //         success: function(response) {
+        //             console.log('post success', response);
+
+        //         }
+        //     })
         // call saveKoala with the new obejct
         saveKoala(objectToSend);
     }); //end addButton on click
@@ -31,6 +41,7 @@ function getKoalas() {
         type: 'GET',
         success: function(data) {
                 console.log('got some koalas: ', data);
+                $('#viewKoalas').empty();
                 for (var i = 0; i < data.length; i++) {
                     var koalaToDisplay = data[i];
                     var $koalaRowToDisplay = $('<tr class = "koalaRow"></tr>');
@@ -40,6 +51,11 @@ function getKoalas() {
                     $koalaRowToDisplay.append('<td class = "koalaGender">' + koalaToDisplay.gender + '</td>');
                     $koalaRowToDisplay.append('<td class = "koalaReadyForTransfer">' + koalaToDisplay.ready_for_transfer + '</td>');
                     $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
+                    if (koalaToDisplay.ready_for_transfer == 'N') {
+                        console.log('Koala is going to be transferred');
+                        $koalaRowToDisplay.append('<button class=transfer button>Transfer?</button>')
+
+                    }
                     $('#viewKoalas').append($koalaRowToDisplay);
 
                 }
@@ -57,6 +73,7 @@ function saveKoala(newKoala) {
         data: newKoala,
         success: function(data) {
                 console.log('got some koalas: ', data);
+                getKoalas();
             } // end success
     }); //end ajax
 }
