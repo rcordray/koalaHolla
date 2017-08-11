@@ -6,8 +6,8 @@ var port = process.env.PORT || 5000;
 var koalas = require('./routes/koala')
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('server/public'));
-app.use('/koala', koalas)
+app.use(express.static('public'));
+app.use('/koalas', koalas);
 
 // Start listening for requests on a specific port
 app.listen(port, function() {
