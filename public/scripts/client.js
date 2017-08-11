@@ -31,6 +31,16 @@ $(document).ready(function() {
         // call saveKoala with the new obejct
         saveKoala(objectToSend);
     }); //end addButton on click
+    $('#viewKoalas').on('click', '.transferButton', function() {
+        var transferId = $(this).parent().parent().data('id');
+        $.ajax({
+            method: 'PUT',
+            url: '/koalas/' + transferId,
+            success: function(response) {
+                getKoalas();
+            }
+        })
+    })
 }); // end doc ready
 
 function getKoalas() {
@@ -53,7 +63,7 @@ function getKoalas() {
                     $koalaRowToDisplay.append('<td class = "koalaNotes">' + koalaToDisplay.notes + '</td>');
                     if (koalaToDisplay.ready_for_transfer == 'N') {
                         console.log('Koala is going to be transferred');
-                        $koalaRowToDisplay.append('<button class=transfer button>Transfer?</button>')
+                        $koalaRowToDisplay.append('<button class="transferButton">Transfer?</button>')
 
                     }
                     $('#viewKoalas').append($koalaRowToDisplay);

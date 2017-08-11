@@ -42,5 +42,25 @@ router.post('/', function(req, res) {
         }
     })
 })
+router.put('/:id', function(req, res) {
+var transfer = req.params.id;
+pool.connect(function(errorConnectingToDatabase, client, done) {
+        if (errorConnectingToDatabase) {
+            console.log('Error connecting to DataBase', errorConnectingToDatabase);
+            res.sendStatus(500)
+        } else {
+            client.query('UPDATE koala SET ready_for_transfer = \'Y\' WHERE id=$1', [transferId], function(errorMakingQuery, result) {
+                done();
+            })
+            if (errorMakingQuery) {
+                console.log('Error making database query', errorMakingQuery);
+                res.sendStatus(500);
+            } else {
+                res.send(result.rows);
+            }
+        });
 
+}
+});
+})
 module.exports = router;
